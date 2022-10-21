@@ -80,7 +80,7 @@
 					"Fn::GetAtt": ["LambdaExecutionRole", "Arn"]
 				},
 				"Runtime": "python2.7",
-				"Timeout": "30"
+				"Timeout": 30
 			}
 		},
 		"AMIFetchCustomResource": {

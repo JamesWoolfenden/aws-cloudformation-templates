@@ -22,7 +22,6 @@
 },
 "Resources": {
   "LambdaRole": {
-    "Description": "IAM role to allow Lambda permissions to create interafce endpoint",
     "Type": "AWS::IAM::Role",
     "Properties": {
       "AssumeRolePolicyDocument": {
@@ -72,8 +71,8 @@
           ]]}
         },
         "Handler": "index.lambda_handler",
-        "Runtime": "python3.6",
-        "Timeout": "30",
+        "Runtime": "python3.9",
+        "Timeout": 30,
         "Role": { "Fn::GetAtt" : ["LambdaRole", "Arn"] },
         "Environment": {
           "Variables": {

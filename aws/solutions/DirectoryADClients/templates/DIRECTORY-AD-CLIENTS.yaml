@@ -220,7 +220,6 @@ Resources:
             - !If
               - DomainDNSServersCondition
               - Key: dnsIpAddresses
-                Value:
               - !Ref AWS::NoValue
       InstanceType: !Ref DomainMembersInstanceType
       SubnetId: !Ref PrivateSubnet1ID

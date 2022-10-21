@@ -217,7 +217,7 @@ Resources:
         S3Key: "createDesbucket.zip"
       Handler: bucketrepl.handler
       Role: !GetAtt LambdaExecutionRole.Arn
-      Runtime: nodejs8.10
+      Runtime: nodejs16.x
       Timeout: 60
   TriggerLambdaRepS3:
     Type: Custom::LambdaTrig
@@ -237,7 +237,7 @@ Resources:
         S3Key: "createbucket.zip"
       Handler: create_kms.handler
       Role: !GetAtt LambdaExecutionRole.Arn
-      Runtime: nodejs8.10
+      Runtime: nodejs16.x
       Timeout: 60
   TriggerLambdaKmsKey:
     Type: Custom::LambdaTrig
@@ -258,7 +258,7 @@ Resources:
           S3Key: "createbucket.zip"
         Handler: bucketversion.handler
         Role: !GetAtt LambdaExecutionRole.Arn
-        Runtime: nodejs8.10
+        Runtime: nodejs16.x
         Timeout: 60
   TriggerLambdaBucketVersion:
     Type: Custom::LambdaTrig
@@ -279,7 +279,7 @@ Resources:
         S3Key: "createbucket.zip"
       Handler: denaynonencrypt.handler
       Role: !GetAtt LambdaExecutionRole.Arn
-      Runtime: nodejs8.10
+      Runtime: nodejs16.x
       Timeout: 60
   TriggerLambdaBucketDenyNonEcrypt:
       Type: Custom::LambdaTrig
@@ -300,7 +300,7 @@ Resources:
           S3Key: "createbucket.zip"
         Handler: defaulrencrypt.handler
         Role: !GetAtt LambdaExecutionRole.Arn
-        Runtime: nodejs8.10
+        Runtime: nodejs16.x
         Timeout: 60
   TriggerLambdaBucketDefaultEncrypt:
         Type: Custom::LambdaTrig
@@ -321,7 +321,7 @@ Resources:
           S3Key: "createbucket.zip"
         Handler: lifecycle.handler
         Role: !GetAtt LambdaExecutionRole.Arn
-        Runtime: nodejs8.10
+        Runtime: nodejs16.x
         Timeout: 60
   TriggerLambdaBucketLiveCycle:
         Type: Custom::LambdaTrig
