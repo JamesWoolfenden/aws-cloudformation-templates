@@ -221,10 +221,6 @@ Resources:
               - DomainDNSServersCondition
               - Key: dnsIpAddresses
                 Value:
-                  - !If [DomainDNSServer1Condition, !Ref DomainDNSServer1, !Ref AWS::NoValue]
-                  - !If [DomainDNSServer2Condition, !Ref DomainDNSServer2, !Ref AWS::NoValue]
-                  - !If [DomainDNSServer3Condition, !Ref DomainDNSServer3, !Ref AWS::NoValue]
-                  - !If [DomainDNSServer4Condition, !Ref DomainDNSServer4, !Ref AWS::NoValue]
               - !Ref AWS::NoValue
       InstanceType: !Ref DomainMembersInstanceType
       SubnetId: !Ref PrivateSubnet1ID
@@ -396,10 +392,6 @@ Resources:
           - !Ref DirectoryName
         dnsIpAddresses: !If
           - DomainDNSServersCondition
-          - - !If [DomainDNSServer1Condition, !Ref DomainDNSServer1, !Ref AWS::NoValue]
-            - !If [DomainDNSServer2Condition, !Ref DomainDNSServer2, !Ref AWS::NoValue]
-            - !If [DomainDNSServer3Condition, !Ref DomainDNSServer3, !Ref AWS::NoValue]
-            - !If [DomainDNSServer4Condition, !Ref DomainDNSServer4, !Ref AWS::NoValue]
           - !Ref AWS::NoValue
   JoinDomainAssociationTags:
     Type: AWS::SSM::Association
@@ -423,8 +415,4 @@ Resources:
           - !Ref DirectoryName
         dnsIpAddresses: !If
           - DomainDNSServersCondition
-          - - !If [DomainDNSServer1Condition, !Ref DomainDNSServer1, !Ref AWS::NoValue]
-            - !If [DomainDNSServer2Condition, !Ref DomainDNSServer2, !Ref AWS::NoValue]
-            - !If [DomainDNSServer3Condition, !Ref DomainDNSServer3, !Ref AWS::NoValue]
-            - !If [DomainDNSServer4Condition, !Ref DomainDNSServer4, !Ref AWS::NoValue]
           - !Ref AWS::NoValue

@@ -199,8 +199,8 @@
                 "SecurityGroupIngress" : [
                     {
                         "IpProtocol" : "tcp",
-                        "FromPort"   : "6379",
-                        "ToPort"     : "6379"
+                        "FromPort"   : 6379,
+                        "ToPort"     : 6379
                     }
                 ]
             }
@@ -208,7 +208,7 @@
         "RedisReplicationGroup"              : {
             "Type" : "AWS::ElastiCache::ReplicationGroup",
             "Properties" : {
-                "AutomaticFailoverEnabled" : "true",
+                "AutomaticFailoverEnabled" : true,
                 "CacheNodeType"            : {
                     "Ref" : "RedisNodeType"
                 },
@@ -220,7 +220,7 @@
                 },
                 "Engine"                   : "redis",
                 "EngineVersion"            : "2.8.24",
-                "NumCacheClusters"         : "2",
+                "NumCacheClusters"         : 2,
                 "PreferredCacheClusterAZs" : [
                     {
                         "Fn::FindInMap" : [
