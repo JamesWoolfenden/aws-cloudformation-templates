@@ -350,7 +350,7 @@ Resources:
       Type: AWS::CloudFormation::WaitConditionHandle
 
     PrivateWaitCondition:
-      DependsOn: PrivateInstance
+      DependsOn: [PrivateInstance]
       Type: AWS::CloudFormation::WaitCondition
       Properties:
         Handle: !Ref PrivateWaitHandle
@@ -358,7 +358,7 @@ Resources:
         Count: 1
 
     S3PrefixListID:
-      DependsOn: S3Endpoint
+      DependsOn: [S3Endpoint]
       Type: Custom::GetPL
       Properties:
         ServiceToken:

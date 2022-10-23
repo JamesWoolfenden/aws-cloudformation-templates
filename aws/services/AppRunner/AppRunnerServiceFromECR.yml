@@ -55,7 +55,7 @@ Resources:
           ImageRepositoryType: ECR
           ImageIdentifier: !Ref ECRURL
           ImageConfiguration:
-            Port: 8080
+            Port: "8080"
       # Default Configurations
       # InstanceConfiguration:
       #   Cpu: 1024

@@ -103,13 +103,13 @@ Resources:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref VPC
-      AvailabilityZone: !Select [0, Fn::GetAZs: !Ref AWS::Region]
+      # AvailabilityZone: !Select [0, Fn::GetAZs: !Ref AWS::Region]
       CidrBlock: !Ref PublicCidrBlock1
       Tags:
         - Key: Name
           Value: !Sub ${AWS::StackName}-public-subnet1
         - Key: kubernetes.io/role/elb
-          Value: 1
+          Value: "1"
   PublicRouteTableAssociation1:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
@@ -120,13 +120,13 @@ Resources:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref VPC
-      AvailabilityZone: !Select [1, Fn::GetAZs: !Ref AWS::Region]
+      # AvailabilityZone: !Select [1, Fn::GetAZs: !Ref AWS::Region]
       CidrBlock: !Ref PublicCidrBlock2
       Tags:
         - Key: Name
           Value: !Sub ${AWS::StackName}-public-subnet2
         - Key: kubernetes.io/role/elb
-          Value: 1
+          Value: "1"
   PublicRouteTableAssociation2:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
@@ -137,13 +137,13 @@ Resources:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref VPC
-      AvailabilityZone: !Select [2, Fn::GetAZs: !Ref AWS::Region]
+      # AvailabilityZone: !Select [2, Fn::GetAZs: !Ref AWS::Region]
       CidrBlock: !Ref PublicCidrBlock3
       Tags:
         - Key: Name
           Value: !Sub ${AWS::StackName}-public-subnet3
         - Key: kubernetes.io/role/elb
-          Value: 1
+          Value: "1"
   PublicRouteTableAssociation3:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
@@ -191,7 +191,7 @@ Resources:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref VPC
-      AvailabilityZone: !Select [0, Fn::GetAZs: !Ref AWS::Region]
+      # AvailabilityZone: !Select [0, Fn::GetAZs: !Ref AWS::Region]
       CidrBlock: !Ref PrivateCidrBlock1
       MapPublicIpOnLaunch: false
       Tags:
@@ -220,7 +220,7 @@ Resources:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref VPC
-      AvailabilityZone: !Select [1, Fn::GetAZs: !Ref AWS::Region]
+      # AvailabilityZone: !Select [1, Fn::GetAZs: !Ref AWS::Region]
       CidrBlock: !Ref PrivateCidrBlock2
       MapPublicIpOnLaunch: false
       Tags:
@@ -249,7 +249,7 @@ Resources:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref VPC
-      AvailabilityZone: !Select [2, Fn::GetAZs: !Ref AWS::Region]
+      # AvailabilityZone: !Select [2, Fn::GetAZs: !Ref AWS::Region]
       CidrBlock: !Ref PrivateCidrBlock3
       MapPublicIpOnLaunch: false
       Tags:
@@ -298,8 +298,8 @@ Resources:
           - Action:
               - sts:AssumeRole
             Effect: Allow
-            Principal:
-              Service: !FindInMap [ ServicePrincipalPartitionMap, !Ref AWS::Partition, EKS ]
+            # Principal:
+            #   Service: !FindInMap [ ServicePrincipalPartitionMap, !Ref AWS::Partition, EKS ]
         Version: 2012-10-17
       ManagedPolicyArns:
         - !Sub arn:${AWS::Partition}:iam::aws:policy/AmazonEKSClusterPolicy
@@ -394,8 +394,8 @@ Resources:
           - Action:
               - sts:AssumeRole
             Effect: Allow
-            Principal:
-              Service: !FindInMap [ ServicePrincipalPartitionMap, !Ref AWS::Partition, EC2 ]
+            # Principal:
+            #   Service: !FindInMap [ ServicePrincipalPartitionMap, !Ref AWS::Partition, EC2 ]
         Version: 2012-10-17
       ManagedPolicyArns:
         - !Sub arn:${AWS::Partition}:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly

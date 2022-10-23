@@ -21,7 +21,7 @@ Resources:
       # The rest of these parameters are not valid and are only here to fill in the example
       AvailabilityZone: 'us-west-2'
       InstanceType: t2.nano
-      SecurityGroupIds: 'sg-1234abcd'
+      SecurityGroupIds: ['sg-1234abcd']
       SubnetId: 'subnet-1234abcd'
 Outputs:
   FoundAMI:
