@@ -77,9 +77,9 @@ Parameters:
       If enabling SSO, then "Create Alias" need to be set to true.
     Type: String
     AllowedValues:
-    - 'true'
-    - 'false'
-    Default: 'false'
+    - true
+    - false
+    Default: false
   pCreateAlias:
     Description: >
       A unique alias to assign to the Microsoft Active Directory in AWS.
@@ -88,9 +88,9 @@ Parameters:
       CloudFormation does not create an alias.
     Type: String
     AllowedValues:
-    - 'true'
-    - 'false'
-    Default: 'false'
+    - true
+    - false
+    Default: false
   pMicrosoftADPW:
     Description: >
       The password for the default administrative user, Admin.
@@ -116,7 +116,7 @@ Parameters:
     Type: AWS::EC2::VPC::Id
 
 Conditions:
-  cAlias: !Equals [ !Ref pCreateAlias, 'true' ]
+  cAlias: !Equals [ !Ref pCreateAlias, true ]
 
 Resources:
   rMSDirectory:

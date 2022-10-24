@@ -8,12 +8,12 @@ Parameters:
   DeliveryChannelExists:
     Type: String
     Description: 'Do you have an exisiting AWS Config delivery channel?'
-    Default: 'false'
-    AllowedValues: ['false', 'true']
+    Default: false
+    AllowedValues: [false, true]
   Ec2VolumeAutoEnableIO:
     Type: String
-    Default: 'false'
-    AllowedValues: ['false', 'true']
+    Default: false
+    AllowedValues: [false, true]
   Ec2VolumeTagKey:
     Type: String
     Default: CostCenter
@@ -24,7 +24,7 @@ Resources:
     Type: AWS::EC2::Volume
     Properties:
       AutoEnableIO: !Ref 'Ec2VolumeAutoEnableIO'
-      Size: '5'
+      Size: 5
       AvailabilityZone: !Select [0, !GetAZs '']
       Tags:
       - Key: !Ref 'Ec2VolumeTagKey'
@@ -131,7 +131,7 @@ Resources:
           }
       Handler: index.handler
       Runtime: nodejs16.x
-      Timeout: '30'
+      Timeout: 30
       Role: !GetAtt [LambdaExecutionRole, Arn]
   LambdaExecutionRole:
     Type: AWS::IAM::Role

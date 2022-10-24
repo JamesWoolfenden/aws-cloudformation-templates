@@ -133,14 +133,14 @@ Resources:
     Properties:
       Description: Ingress from the public ALB
       GroupId: !Ref 'EcsHostSecurityGroup'
-      IpProtocol: -1
+      IpProtocol: "-1"
       SourceSecurityGroupId: !Ref 'PublicLoadBalancerSG'
   EcsSecurityGroupIngressFromSelf:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
       Description: Ingress from other hosts in the same security group
       GroupId: !Ref 'EcsHostSecurityGroup'
-      IpProtocol: -1
+      IpProtocol: "-1"
       SourceSecurityGroupId: !Ref 'EcsHostSecurityGroup'
 
   # Autoscaling group. This launches the actual EC2 instances that will register
@@ -160,7 +160,7 @@ Resources:
         Timeout: PT15M
     UpdatePolicy:
       AutoScalingReplacingUpdate:
-        WillReplace: 'true'
+        WillReplace: true
   ContainerInstances:
     Type: AWS::AutoScaling::LaunchConfiguration
     Properties:
@@ -252,7 +252,7 @@ Resources:
       SecurityGroupIngress:
           # Allow access to ALB from anywhere on the internet
           - CidrIp: 0.0.0.0/0
-            IpProtocol: -1
+            IpProtocol: "-1"
   PublicLoadBalancer:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:

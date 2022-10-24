@@ -20,8 +20,8 @@ Parameters:
     Default: 80
     Description: What port number the application inside the docker container is binding to
   ContainerCpu:
-    Type: Number
-    Default: 256
+    Type: String
+    Default: "256"
     Description: How much CPU to give the container. 1024 is 1 CPU
   ContainerMemory:
     Type: Number
@@ -61,7 +61,8 @@ Resources:
     Properties:
       Family: !Ref 'ServiceName'
       Cpu: !Ref 'ContainerCpu'
-      Memory: !Ref 'ContainerMemory'
+      Memory: "512"
+  #     # Memory: !Ref 'ContainerMemory'
       TaskRoleArn:
         Fn::If:
           - 'HasCustomRole'
@@ -69,7 +70,8 @@ Resources:
           - !Ref "AWS::NoValue"
       ContainerDefinitions:
         - Name: !Ref 'ServiceName'
-          Cpu: !Ref 'ContainerCpu'
+          Cpu: 256
+  #         Cpu:  !Ref 'ContainerCpu'
           Memory: !Ref 'ContainerMemory'
           Image: !Ref 'ImageUrl'
           PortMappings:

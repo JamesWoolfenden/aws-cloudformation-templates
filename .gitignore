@@ -3,3 +3,5 @@
 .vscode/
 .sato/
 .terraform/
+*.js
+*.zip
