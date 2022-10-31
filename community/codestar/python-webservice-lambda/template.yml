@@ -1,6 +1,7 @@
+---
 AWSTemplateFormatVersion: 2010-09-09
-Description: A Python web service deployed to AWS Lambda.
 
+Description: A Python web service deployed to AWS Lambda.
 Parameters:
   ProjectId:
     AllowedPattern: ^[a-z]([a-z0-9-])+$
@@ -19,12 +20,6 @@ Parameters:
     Default: master
     Description: Git branch name.
     Type: String
-  RepositoryName:
-    Description: Git repository name.
-    MaxLength: 100
-    MinLength: 1
-    Type: String
-    Default: default
   RepositoryProvider:
     AllowedValues: [GitHub, CodeCommit]
     Default: CodeCommit
@@ -33,10 +28,6 @@ Parameters:
   UseExistingRepo:
     Type: String
     AllowedValues: [true, false, default]
-    Default: default
-  RepositoryURL:
-    Description: GitHub repository URL.
-    Type: String
     Default: default
 
   # Github specific
@@ -49,20 +40,6 @@ Parameters:
     NoEcho: true
     Type: String
     Default: none
-  RepositoryEnableIssues:
-    AllowedValues: [true, false]
-    Default: false
-    Description: Whether the GitHub issues tile is enabled.
-    Type: String
-
-Mappings:
-  DefaultGitConfig:
-    CodeCommit:
-      Url: asd
-#        Fn::Sub: "https://git-codecommit.${AWS::Region}.amazonaws.com/v1/repos/${ProjectId}"
-    GitHub:
-      Url: asd
-#        Fn::Sub: "https://github.com/${RepositoryProviderUsername}/${ProjectId}.git"
 
 Conditions:
   CreateCodeBuildResources:
@@ -113,7 +90,6 @@ Outputs:
 
 Resources:
   CloudFormationTrustRole:
-    Description: Creating service role in IAM for AWS CloudFormation
     Properties:
       AssumeRolePolicyDocument:
         Statement:
@@ -197,7 +173,6 @@ Resources:
     Type: AWS::IAM::Role
   CodeBuildPolicy:
     Condition: CreateCodeBuildResources
-    Description: Setting IAM policy for service role for Amazon EC2 instances
     Properties:
       PolicyDocument:
         Statement:
@@ -265,15 +240,15 @@ Resources:
     - CodeBuildPolicy
     Properties:
       Artifacts:
-        Packaging: zip
-        Type: codepipeline
+        Packaging: ZIP
+        Type: CODEPIPELINE
       Description:
         Fn::Join:
           - ''
           - - 'AWS CodeStar created CodeBuild Project for '
             - Ref: ProjectId
       Environment:
-        ComputeType: small
+        ComputeType: BUILD_GENERAL1_SMALL
         EnvironmentVariables:
         - Name: S3_BUCKET
           Value:
@@ -294,17 +269,16 @@ Resources:
               - Ref: 'WebsiteS3Bucket'
               - NoVal
         Image: aws/codebuild/eb-nodejs-6.10.0-amazonlinux-64:4.0.0
-        Type: container
+        Type: LINUX_CONTAINER
       Name:
         Ref: 'ProjectId'
       ServiceRole:
         Ref: 'CodeBuildRole'
       Source:
-        Type: codepipeline
+        Type: CODEPIPELINE
     Type: AWS::CodeBuild::Project
   CodeBuildRole:
     Condition: CreateCodeBuildResources
-    Description: Creating service role in IAM for Amazon EC2 instances
     Properties:
       AssumeRolePolicyDocument:
         Statement:
@@ -320,11 +294,9 @@ Resources:
             - Ref: 'ProjectId'
             - CodeBuild
     Type: AWS::IAM::Role
-
   CodeCommitRepo:
     Type: AWS::CodeCommit::Repository
     Condition: BuildCloudCommitRepo
-    Description: Creating AWS CodeCommit repository for application source code
     Properties:
       RepositoryDescription:
         Fn::Join:
@@ -332,10 +304,8 @@ Resources:
         - - {Ref: ProjectId}
           - ' project repository'
       RepositoryName:
-        "Fn::If" : [ { "Fn::Equals" : [ { "Ref" : "RepositoryName" }, "default" ] }, { "Ref" : "ProjectId" }, { "Ref" : "RepositoryName" } ]
-
+       "repo"
   CodePipelineTrustRole:
-    Description: Creating service role in IAM for AWS CodePipeline
     Properties:
       AssumeRolePolicyDocument:
         Statement:
@@ -405,47 +375,19 @@ Resources:
               - Arn
         PolicyName: CodeStarWorkerCodePipelineRolePolicy
       RoleName:
-        Fn::Join:
-          - '-'
-          - - CodeStarWorker
-            - Ref: 'ProjectId'
-            - CodePipeline
+        "codestarrole"
     Type: AWS::IAM::Role
-  CodeStarProject:
-    Description: Starting project creation
-    Properties:
-      ProjectDescription: AWS CodeStar created project
-      ProjectId:
-        Ref: ProjectId
-      ProjectName:
-        Ref: ProjectId
-      ProjectTemplateId: arn:aws:codestar:us-west-2::project-template/github/webservice-pythonservice-lambda
-      StackId:
-        Ref: 'AWS::StackId'
-    Type: AWS::CodeStar::Project
-    Version: 1.0
-
   EnvironmentEC23fd7af6a4f1411e882fb290aa2a9d512:
     Type: AWS::Cloud9::EnvironmentEC2
     Condition: BuildDevEnvironment
     Properties:
-      AutomaticStopTimeMinutes: '30'
+      AutomaticStopTimeMinutes: 30
       Description: Created from CodeStar.
       InstanceType: t2.micro
       Name:
         Ref: ProjectId
-      Repositories:
-        - PathComponent:
-            Fn::Sub: "/${ProjectId}"
-          RepositoryUrl:
-            Fn::If:
-              - Fn::Equals: [ Ref: RepositoryURL, default ]
-              - Fn::FindInMap: [ DefaultGitConfig, Ref: RepositoryProvider, Url ]
-              - Ref: RepositoryURL
       SubnetId: subnet-b0f192ea
-
   LambdaTrustRole:
-    Description: Creating service role in IAM for AWS Lambda
     Properties:
       AssumeRolePolicyDocument:
         Statement:
@@ -469,24 +411,14 @@ Resources:
             Resource: '*'
           Version: 2012-10-17
         PolicyName: CodeStarLambdaWorkerPolicy
-      RoleName:
-        Fn::Join:
-          - '-'
-          - - CodeStarWorker
-            - Ref: 'ProjectId'
-            - Lambda
+      RoleName: 'codestar'
     Type: AWS::IAM::Role
-
   ProjectPipeline:
     Type: AWS::CodePipeline::Pipeline
     DependsOn:
-      - SeedRepo
+      # - SeedRepo
       - LambdaTrustRole
-      - CodePipelineTrustRole
-      - S3Bucket
-      - CodeBuildProject
       - CloudFormationTrustRole
-    Description: Creating a deployment pipeline for your project in AWS CodePipeline
     Properties:
       ArtifactStore:
         Location:
@@ -510,7 +442,7 @@ Resources:
                     Category: Source
                     Owner: ThirdParty
                     Provider: GitHub
-                    Version: 1
+                    Version: "1"
                   Configuration:
                     Branch:
                       Ref: 'RepositoryBranch'
@@ -519,7 +451,7 @@ Resources:
                     Owner:
                       Ref: 'RepositoryProviderUsername'
                   Repo:
-                    "Fn::If" : [ { "Fn::Equals" : [ { "Ref" : "RepositoryName" }, "default" ] }, { "Ref" : "ProjectId" }, { "Ref" : "RepositoryName" } ]
+                    "repo"
                   InputArtifacts: [ ]
                   Name: ApplicationSource
                   OutputArtifacts:
@@ -529,12 +461,12 @@ Resources:
                           - - Ref: 'ProjectId'
                             - SourceArtifact
                   RunOrder: 1
-                - ActionTypeId: {Category: Source, Owner: AWS, Provider: CodeCommit, Version: 1}
+                - ActionTypeId: {Category: Source, Owner: AWS, Provider: CodeCommit, Version: "1"}
                   Configuration:
                     BranchName: master
                     PollForSourceChanges: false
                     RepositoryName:
-                      "Fn::If" : [ { "Fn::Equals" : [ { "Ref" : "RepositoryName" }, "default" ] }, { "Ref" : "ProjectId" }, { "Ref" : "RepositoryName" } ]
+                      "repo"
                   InputArtifacts: []
                   Name: ApplicationSource
                   OutputArtifacts:
@@ -550,7 +482,7 @@ Resources:
                 Category: Build
                 Owner: AWS
                 Provider: CodeBuild
-                Version: 1
+                Version: "1"
               Configuration:
                 ProjectName:
                   Ref: 'ProjectId'
@@ -574,7 +506,7 @@ Resources:
                 Category: Deploy
                 Owner: AWS
                 Provider: CloudFormation
-                Version: 1
+                Version: "1"
               Configuration:
                 ActionMode: CHANGE_SET_REPLACE
                 Capabilities: CAPABILITY_IAM
@@ -614,7 +546,7 @@ Resources:
                 Category: Deploy
                 Owner: AWS
                 Provider: CloudFormation
-                Version: 1
+                Version: "1"
               Configuration:
                 ActionMode: CHANGE_SET_EXECUTE
                 ChangeSetName: pipeline-changeset
@@ -628,10 +560,8 @@ Resources:
               Name: ExecuteChangeSet
               OutputArtifacts: [ ]
               RunOrder: 2
-
   S3ArtifactBucketPolicy:
     Type: AWS::S3::BucketPolicy
-    Description: Setting Amazon S3 bucket policy for AWS CodePipeline access
     Properties:
       Bucket:
         Ref: 'S3Bucket'
@@ -691,11 +621,10 @@ Resources:
               - "/*"
           Sid: WhitelistedPut
         Version: 2012-10-17
-
   S3Bucket:
     Type: AWS::S3::Bucket
     DeletionPolicy: Retain
-    Description: Creating Amazon S3 bucket for AWS CodePipeline artifacts
+    UpdateReplacePolicy : Retain
     Properties:
       BucketName:
         Fn::Join:
@@ -715,56 +644,10 @@ Resources:
                 - S3Bucket
       VersioningConfiguration:
         Status: Enabled
-
-  SeedRepo:
-    Type: AWS::CodeStar::SeedRepository
-    DeletionPolicy: Retain
-    Description: Adding application source code to the GitHub repository for the project.
-    Properties:
-      DefaultBranchName:
-        Ref: 'RepositoryBranch'
-      ProjectId:
-        Ref: 'ProjectId'
-      ProjectTemplateId: arn:aws:codestar:us-west-2::project-template/github/webservice-pythonservice-lambda
-      RepositoryProvider:
-        Ref: 'RepositoryProvider'
-      RepositoryProviderUsername:
-        Ref: 'RepositoryProviderUsername'
-      RepositoryToken:
-        Ref: 'RepositoryToken'
-      RepositoryURL:
-        Fn::If:
-          - Fn::Equals: [ Ref: RepositoryURL, default ]
-          - Fn::FindInMap: [ DefaultGitConfig, Ref: RepositoryProvider, Url ]
-          - Ref: RepositoryURL
-
-  SyncInitialResources:
-    Type: AWS::CodeStar::SyncResources
-    Version: 1.0
-    DependsOn:
-      - SeedRepo
-    Description: Getting GitHub issues tile settings for your AWS CodeStar project.
-    Properties:
-      ProjectId:
-        Ref: 'ProjectId'
-
-  SyncResources:
-    Type: AWS::CodeStar::SyncResources
-    Version: 1.0
-    DependsOn:
-      - SeedRepo
-      - CodeBuildProject
-      - ProjectPipeline
-      - SyncInitialResources
-    Description: Adding all created resources to your AWS CodeStar project
-    Properties:
-      ProjectId:
-        Ref: 'ProjectId'
-
   WebsiteS3Bucket:
     Condition: CreateWebSiteS3Bucket
     DeletionPolicy: Retain
-    Description: Creating Amazon S3 bucket for Website static artifacts
+    UpdateReplacePolicy: Retain
     Properties:
       BucketName:
         Fn::Join:
