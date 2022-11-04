@@ -27,8 +27,8 @@ Parameters:
   SSHLocation:
     Description: The IP address range that can be used to SSH to the EC2 instances
     Type: String
-    MinLength: '9'
-    MaxLength: '18'
+    MinLength: 9
+    MaxLength: 18
     Default: 0.0.0.0/0
     AllowedPattern: (\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/(\d{1,2})
     ConstraintDescription: must be a valid IP CIDR range of the form x.x.x.x/x.
@@ -386,25 +386,25 @@ Resources:
     Type: AWS::ElasticLoadBalancing::LoadBalancer
     Properties:
       AvailabilityZones: !GetAZs ''
-      CrossZone: 'true'
+      CrossZone: true
       Listeners:
-      - LoadBalancerPort: '80'
-        InstancePort: '80'
+      - LoadBalancerPort: "80"
+        InstancePort: "80"
         Protocol: HTTP
       HealthCheck:
         Target: HTTP:80/
-        HealthyThreshold: '3'
-        UnhealthyThreshold: '5'
-        Interval: '30'
-        Timeout: '5'
+        HealthyThreshold: "3"
+        UnhealthyThreshold: "5"
+        Interval: "30"
+        Timeout: "5"
       ConnectionDrainingPolicy:
-        Enabled: 'true'
-        Timeout: '300'
+        Enabled: true
+        Timeout: 300
       AccessLoggingPolicy:
         S3BucketName: !Ref 'LogsBucket'
         S3BucketPrefix: Logs
-        Enabled: 'true'
-        EmitInterval: '60'
+        Enabled: true
+        EmitInterval: 60
     DependsOn: LogsBucketPolicy
   LogsBucket:
     Type: AWS::S3::Bucket
@@ -437,10 +437,10 @@ Resources:
         Timeout: PT15M
     UpdatePolicy:
       AutoScalingRollingUpdate:
-        MinInstancesInService: '1'
-        MaxBatchSize: '1'
+        MinInstancesInService: 1
+        MaxBatchSize: 1
         PauseTime: PT15M
-        WaitOnResourceSignals: 'true'
+        WaitOnResourceSignals: true
   LaunchConfig:
     Type: AWS::AutoScaling::LaunchConfiguration
     Metadata:
@@ -489,11 +489,11 @@ Resources:
           services:
             sysvinit:
               httpd:
-                enabled: 'true'
-                ensureRunning: 'true'
+                enabled: true
+                ensureRunning: true
               cfn-hup:
-                enabled: 'true'
-                ensureRunning: 'true'
+                enabled: true
+                ensureRunning: true
                 files: [/etc/cfn/cfn-hup.conf, /etc/cfn/hooks.d/cfn-auto-reloader.conf]
     Properties:
       KeyName: !Ref 'KeyName'
@@ -523,12 +523,12 @@ Resources:
       GroupDescription: Enable SSH access and HTTP access on the configured port
       SecurityGroupIngress:
       - IpProtocol: tcp
-        FromPort: '22'
-        ToPort: '22'
+        FromPort: 22
+        ToPort: 22
         CidrIp: !Ref 'SSHLocation'
       - IpProtocol: tcp
-        FromPort: '80'
-        ToPort: '80'
+        FromPort: 80
+        ToPort: 80
         CidrIp: 0.0.0.0/0
 Outputs:
   URL:

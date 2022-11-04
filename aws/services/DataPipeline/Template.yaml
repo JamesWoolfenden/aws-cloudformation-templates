@@ -9,7 +9,7 @@ Resources:
     Properties:
       Name: DynamoDBInputS3OutputHive
       Description: Pipeline to backup DynamoDB data to S3
-      Activate: 'true'
+      Activate: true
       PipelineObjects:
       - Id: ResourceId_I1mCc
         Name: ReleaseLabelCluster
