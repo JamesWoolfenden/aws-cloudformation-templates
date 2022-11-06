@@ -139,19 +139,19 @@ Parameters:
   ActivateProductTagOptions:
     Description:    Activate Custom Tag Options? Used for portfolio tagging
     Type:           String
-    Default:        "true"
+    Default:        true
     AllowedValues:
-      - 'true'
-      - 'false'
+      - true
+      - false
 
 # Share Portfolio
   ShareThisPortfolio:
     Description:    Please specify if this Portfolio will be Shared with additonal accounts?
     Type:           String
-    Default:        "false"
+    Default:        false
     AllowedValues:
-      - 'true'
-      - 'false'
+      - true
+      - false
 
 # AccountId
   AccountIdOfChildAWSAccount:

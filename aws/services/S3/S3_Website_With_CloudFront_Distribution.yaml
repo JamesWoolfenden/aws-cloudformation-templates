@@ -57,17 +57,17 @@ Resources:
         Aliases:
         - !Join ['', [!Ref 'AWS::StackName', !Ref 'AWS::AccountId', ., !Ref 'AWS::Region',
             ., !Ref 'HostedZone']]
-        Enabled: 'true'
+        Enabled: true
         DefaultCacheBehavior:
           ForwardedValues:
-            QueryString: 'true'
+            QueryString: true
           TargetOriginId: only-origin
           ViewerProtocolPolicy: allow-all
         DefaultRootObject: index.html
         Origins:
         - CustomOriginConfig:
-            HTTPPort: '80'
-            HTTPSPort: '443'
+            HTTPPort: 80
+            HTTPSPort: 443
             OriginProtocolPolicy: http-only
           DomainName: !Join ['', [!Ref 'S3BucketForWebsiteContent', !FindInMap [Region2S3WebsiteSuffix,
                 !Ref 'AWS::Region', Suffix]]]

@@ -47,8 +47,8 @@ Parameters:
   SSHLocation:
     Description: The IP address range that can be used to SSH to the EC2 instances
     Type: String
-    MinLength: '9'
-    MaxLength: '18'
+    MinLength: 9
+    MaxLength: 18
     Default: 0.0.0.0/0
     AllowedPattern: (\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/(\d{1,2})
     ConstraintDescription: must be a valid IP CIDR range of the form x.x.x.x/x.
@@ -345,8 +345,8 @@ Resources:
       GroupDescription: Enable SSH access via port 22
       SecurityGroupIngress:
       - IpProtocol: tcp
-        FromPort: '22'
-        ToPort: '22'
+        FromPort: 22
+        ToPort: 22
         CidrIp: !Ref 'SSHLocation'
   EC2Instance:
     Type: AWS::EC2::Instance
@@ -368,10 +368,10 @@ Resources:
       GroupSet: [!Ref 'SSHSecurityGroup']
       PrivateIpAddresses:
       - PrivateIpAddress: !Ref 'PrimaryIPAddress'
-        Primary: 'true'
+        Primary: true
       - PrivateIpAddress: !Ref 'SecondaryIPAddress'
-        Primary: 'false'
-      SourceDestCheck: 'true'
+        Primary: false
+      SourceDestCheck: true
       SubnetId: !Ref 'SubnetId'
       Tags:
       - Key: Name
