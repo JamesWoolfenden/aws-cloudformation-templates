@@ -5,3 +5,5 @@
 .terraform/
 *.js
 *.zip
+terraform.tfstate
+terraform.tfstate.backup

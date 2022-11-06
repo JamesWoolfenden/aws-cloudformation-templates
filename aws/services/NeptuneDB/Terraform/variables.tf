@@ -24,7 +24,7 @@ variable "HighCpuAlarmThreshold" {
 
 variable "SNSEmailSubscription" {
   type        = string
-  default     = ""
+  default     = "James.Woolfenden@gmail.com"
   description = "SNS Email subscription. Optional. If not provided, no alarm subscriptions will be created"
 }
 
@@ -123,24 +123,28 @@ variable "IAMAuthEnabled" {
   default     = false
   description = "Neptune DB IAM authentication"
 }
+
 variable "MajorVersionUpgrade" {
   type        = bool
   default     = true
   description = "Neptune DB major version upgrade"
 }
+
 variable "MinorVersionUpgrade" {
   type        = bool
   default     = true
   description = "Neptune DB minor version upgrade"
 }
+
 variable "VPCStack" {
   type        = string
   default     = "vpc"
   description = "Please specify the VPC Stack Name."
 }
+
 variable "DBInstanceClass" {
   type        = string
-  default     = "db.r4.large"
+  default     = "db.t3.medium"
   description = "Neptune DB instance class that will be used for primary and all replicas"
 }
 

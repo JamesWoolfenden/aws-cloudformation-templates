@@ -7,6 +7,7 @@ resource "aws_neptune_cluster_instance" "NeptuneDBInstance" {
   cluster_identifier           = aws_neptune_cluster.NeptuneDBCluster.cluster_identifier
   engine                       = "neptune"
   instance_class               = var.DBInstanceClass
+
   tags = {
     "Name"       = "${var.Env}-${var.AppName}-Instance"
     "App"        = var.AppName

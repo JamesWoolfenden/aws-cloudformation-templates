@@ -1,5 +1,5 @@
 resource "aws_neptune_cluster_parameter_group" "NeptuneDBClusterParameterGroup" {
-  family      = "neptune1"
+  family      = var.family
   name        = "${var.Env}-${var.AppName}-neptune-cluster-parameter-group"
   description = "CloudFormation managed Neptune DB Cluster Parameter Group - ${var.Env}-${var.AppName}-cluster-parameter-group"
   parameter {

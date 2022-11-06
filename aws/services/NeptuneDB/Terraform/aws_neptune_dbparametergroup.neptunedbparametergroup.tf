@@ -1,5 +1,5 @@
 resource "aws_neptune_parameter_group" "NeptuneDBParameterGroup" {
-  family      = "neptune1"
+  family      = var.family
   name        = "${var.Env}-${var.AppName}-parameter-group"
   description = "CloudFormation managed Neptune DB Parameter Group - ${var.Env}-${var.AppName}-parameter-group"
   parameter {
@@ -17,4 +17,11 @@ resource "aws_neptune_parameter_group" "NeptuneDBParameterGroup" {
     "Version"    = var.Version
     "Storage"    = var.Storage
   }
+}
+
+
+variable "family" {
+  type=string
+  default="neptune1.2"
+  description = "Neptune family"
 }
