@@ -16,8 +16,8 @@ resource "aws_elb" "ElasticLoadBalancer" {
   instances                   = []
   cross_zone_load_balancing   = true
   idle_timeout                = 400
-  connection_draining="{true 0xc0002f3f38   [] map[] }
-  connection_draining_timeout="{true 0xc0002f3f38   [] map[] }
+  connection_draining= true
+  connection_draining_timeout=300
   listener {
     instance_port    = 80
     #guessed
