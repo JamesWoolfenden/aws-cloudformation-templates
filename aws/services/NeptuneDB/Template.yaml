@@ -84,7 +84,7 @@ Metadata:
 
 Parameters:
 
-# Enviornment type
+# Environment type
   Env:
     Description:    Please specify the target Environment. Used for tagging and resource names. Mandatory LOWER CASE.
     Type:           String

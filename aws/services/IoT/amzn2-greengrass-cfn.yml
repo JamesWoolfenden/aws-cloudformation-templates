@@ -74,7 +74,7 @@ Resources:
                                 - "/"
                                 - - "cert"
                                   - !GetAtt IoTThing.certificateId
-          SyncShadow: "false"
+          SyncShadow: false
   FunctionDefinition:
     # Example of using "InitialVersion" to not have to reference a separate
     # "Version" resource
@@ -89,20 +89,20 @@ Resources:
           - Id: !Join ["_", [!Ref CoreName, "sample"] ]
             FunctionArn: !Ref GGSampleFunctionVersion
             FunctionConfiguration:
-              Pinned: 'true'
+              Pinned: true
               Executable: index.py
-              MemorySize: '65536'
-              Timeout: '300'
+              MemorySize: 65536
+              Timeout: 300
               EncodingType: binary
               Environment:
                 Variables:
                   CORE_NAME: !Ref CoreName
-                AccessSysfs: 'false'
+                AccessSysfs: false
                 Execution:
                   IsolationMode: GreengrassContainer
                   RunAs:
-                    Uid: '1'
-                    Gid: '10'
+                    Uid: 1
+                    Gid: 10
   SubscriptionDefinition:
     Type: 'AWS::Greengrass::SubscriptionDefinition'
     Properties:
@@ -444,15 +444,15 @@ Resources:
               sys.stdout.flush()
               cfnresponse.send(event, context, result, responseData)
 
-  GroupDeploymentReset:
-    # Allows for deletion of Greengrass group if the deployment status is not
-    # reset manually via the console or API
-    Type: Custom::GroupDeploymentReset
-    DependsOn: GreengrassGroup
-    Properties:
-      ServiceToken: !GetAtt GroupDeploymentResetFunction.Arn
-      Region: !Ref "AWS::Region"
-      ThingName: !Join ["_", [!Ref CoreName, "Core"] ]
+  # GroupDeploymentReset:
+  #   # Allows for deletion of Greengrass group if the deployment status is not
+  #   # reset manually via the console or API
+  #   Type: Custom::GroupDeploymentReset
+  #   DependsOn: GreengrassGroup
+  #   Properties:
+  #     ServiceToken: !GetAtt GroupDeploymentResetFunction.Arn
+  #     Region: !Ref "AWS::Region"
+  #     ThingName: !Join ["_", [!Ref CoreName, "Core"] ]
   GroupDeploymentResetFunction:
     Type: AWS::Lambda::Function
     Properties:
